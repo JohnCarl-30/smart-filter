@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+venv/
+.env
+
+# Qdrant local storage
+qdrant_storage/
+**/qdrant_storage/
+.lock
+
+# Node.js
+node_modules/
+dist/
+.DS_Store
+
+# Data / Persistence
+data/user_preferences/
+
+# IDEs
+.vscode/
+.idea/

@@ -1,0 +1,10 @@
+fastapi>=0.115,<1
+uvicorn>=0.34,<1
+qdrant-client>=1.17,<2
+openai==1.13.3
+pydantic>=2.11,<3
+python-dotenv==1.0.1
+watchfiles==0.21.0
+uvloop>=0.22,<1
+httpx==0.27.0
+fastembed>=0.5,<1
