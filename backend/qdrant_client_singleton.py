@@ -1,6 +1,6 @@
 from __future__ import annotations
 from qdrant_client import QdrantClient
-from config import PROJECT_ROOT, QDRANT_ENDPOINT, QDRANT_API_KEY
+from config import QDRANT_ENDPOINT, QDRANT_API_KEY
 
 _qdrant: QdrantClient | None = None
 
@@ -14,6 +14,6 @@ def get_qdrant() -> QdrantClient:
                 api_key=QDRANT_API_KEY,
             )
         else:
-            storage_path = str(PROJECT_ROOT / "qdrant_storage")
-            _qdrant = QdrantClient(path=storage_path)
+            # Fallback to local on-disk storage if no endpoint is provided
+            _qdrant = QdrantClient(path="qdrant_storage")
     return _qdrant

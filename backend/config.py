@@ -2,18 +2,13 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-BACKEND_ROOT = Path(__file__).resolve().parent
-PROJECT_ROOT = BACKEND_ROOT.parent
-
-# Support both the documented repo-root `.env` and the currently used
-# `backend/.env` without overriding already exported shell variables.
-for env_file in (PROJECT_ROOT / ".env", BACKEND_ROOT / ".env"):
-    load_dotenv(env_file, override=False)
+PROJECT_ROOT = Path(__file__).parent.parent
+load_dotenv("../.env")
 
 OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
-EMBEDDING_MODEL: str = "BAAI/bge-small-en-v1.5"
-EMBEDDING_DIM: int = 384
-INTENT_MODEL: str = os.getenv("OPENAI_CHAT_MODEL", "gpt-3.5-turbo")
+EMBEDDING_MODEL: str = "text-embedding-ada-002"
+EMBEDDING_DIM: int = 1536
+INTENT_MODEL: str = "gpt-4o-mini"
 
 QDRANT_ENDPOINT: str = os.getenv("QDRANT_ENDPOINT", "")
 QDRANT_API_KEY: str = os.getenv("QDRANT_API_KEY", "")

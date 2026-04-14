@@ -1,28 +1,32 @@
 from __future__ import annotations
-import logging
 import os
-from fastembed import TextEmbedding
+from openai import OpenAI
+from config import EMBEDDING_MODEL
 
-logger = logging.getLogger(__name__)
+_client: OpenAI | None = None
 
-_model: TextEmbedding | None = None
 
-def _get_model() -> TextEmbedding:
-    global _model
-    if _model is None:
-        logger.info("Initializing FastEmbed (BAAI/bge-small-en-v1.5)...")
-        _model = TextEmbedding()
-    return _model
+def _get_client() -> OpenAI:
+    global _client
+    if _client is None:
+        _client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    return _client
+
+
 
 def embed(text: str) -> list[float]:
-    """Generate dense vector using FastEmbed (BAAI/bge-small-en-v1.5) - 384 dimensions."""
-    model = _get_model()
-    embeddings = list(model.embed([text.replace("\n", " ")]))
-    return embeddings[0].tolist()
+    response = _get_client().embeddings.create(
+        model=EMBEDDING_MODEL,
+        input=text.replace("\n", " "),
+    )
+    return response.data[0].embedding
+
+
 
 def embed_batch(texts: list[str]) -> list[list[float]]:
-    """Generate embeddings for a batch of texts."""
-    model = _get_model()
     cleaned = [t.replace("\n", " ") for t in texts]
-    embeddings = list(model.embed(cleaned))
-    return [e.tolist() for e in embeddings]
+    response = _get_client().embeddings.create(
+        model=EMBEDDING_MODEL,
+        input=cleaned,
+    )
+    return [item.embedding for item in response.data]
